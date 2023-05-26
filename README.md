@@ -1,1 +1,3 @@
-# Toge's homelab
+# My homelab
+
+<img src="./homelab.jpg">
