@@ -1,0 +1,19 @@
+[Unit]
+Description=Autossh
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+User=goto
+Environment="AUTOSSH_DEBUG=7"
+Environment="AUTOSSH_LOGLEVEL=7"
+Environment="AUTOSSH_LOGFILE=/home/goto/homelab/autossh/autossh.log"
+Environment="AUTOSSH_POLL=180"
+Environment="AUTOSSH_PORT=50022"
+ExecStart=/usr/bin/autossh -N -C -T -R 2222:localhost:22 xserver
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
