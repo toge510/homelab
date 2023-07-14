@@ -2,7 +2,7 @@
 
 [MetalLB](https://metallb.universe.tf/) provides a network load-balancer implementation for Kubernetes clusters that do not run on a supported cloud provider, effectively allowing the usage of LoadBalancer Services within any cluster.
 
-```
+```mermaid
 flowchart LR
     MetalLB --> loadBalancer Service
 ```

@@ -12,10 +12,6 @@ wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/re
 
 Update Service as Load balancer type
 
-```
-
-```
-
 Deploy the Dashboard
 
 ```
