@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart LR
-    MetalLB --> loadBalancer Service
+    MetalLB --> loadBalancerService
 ```
 
 ### Deploy
