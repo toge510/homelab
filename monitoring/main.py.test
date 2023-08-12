@@ -1,0 +1,16 @@
+from prometheus_client import Counter, start_http_server
+from flask import Flask
+
+REQUESTS = Counter('http_requests_total',
+                  'Total number of requests', 
+                  labelnames=['path', 'method'])
+
+app = Flask(__name__)
+@app.get("/cars")
+def get_cards():
+    REQUESTS.labels('cars', 'get').inc()
+    return ["toyota", "honada", "mazda"]
+
+if __name__ == '__main__':
+    start_http_server(8000)
+    app.run(debug=False, host="0.0.0.0", port='6000')

@@ -5,18 +5,6 @@ networks:
   monitoring:
     driver: bridge
 services:
-  node_exporter:
-    image: quay.io/prometheus/node-exporter:latest
-    container_name: node_exporter
-    ports:
-      - 9100:9100
-    restart: unless-stopped
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    networks:
-      - monitoring
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -43,4 +31,18 @@ services:
       - '$PWD/data:/var/lib/grafana'
     networks:
       - monitoring
-  
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    ports:
+      - 9100:9100
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+  light_exporter:
+    build: ./light_exporter
+    container_name: light_exporter
+    networks:
+      - monitoring

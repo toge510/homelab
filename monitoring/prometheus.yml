@@ -37,3 +37,12 @@ scrape_configs:
     scheme: https
     static_configs:
       - targets: ["toge510.com"]
+
+  - job_name: "custome_exporter"
+    static_configs:
+      - targets: ["light_exporter:8000"]
+    
+
+  # - job_name: "api"
+  #   static_configs:
+  #     - targets: ["localhost:8000"]
