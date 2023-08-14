@@ -1,6 +1,8 @@
 version: '3.8'
 volumes:
   prometheus_data: {}
+  grafana_data: {}
+  alertmanager_data: {}
 networks:
   monitoring:
     driver: bridge
@@ -12,8 +14,9 @@ services:
       - 9090:9090
     command:
       - --config.file=/etc/prometheus/prometheus.yml
+      - --web.enable-lifecycle
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus:/etc/prometheus:ro
       - prometheus_data:/prometheus
     networks:
       - monitoring
@@ -28,7 +31,7 @@ services:
       - '3000:3000'
     # adding the mount volume point which we create earlier
     volumes:
-      - '$PWD/data:/var/lib/grafana'
+      - 'grafana_data:/var/lib/grafana'
     networks:
       - monitoring
   node_exporter:
@@ -41,8 +44,26 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - monitoring
   light_exporter:
     build: ./light_exporter
     container_name: light_exporter
+    networks:
+      - monitoring
+  alertmanager:
+    image: quay.io/prometheus/alertmanager
+    container_name: alertmanager
+    volumes:
+      - ./alertmanager/alertmanager.yml:/config/alertmanager.yml
+      - alertmanager_data:/data
+    command: --config.file=/config/alertmanager.yml --log.level=debug
+    ports:
+      - 9093:9093
     networks:
       - monitoring

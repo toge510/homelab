@@ -1,0 +1,13 @@
+groups:
+- name: node
+  rules:
+    - alert: DiskSpaceAlert
+      expr: 100 - ((node_filesystem_avail_bytes{mountpoint="/"} * 100) / node_filesystem_size_bytes{mountpoint="/"}) > 15
+      for: 10s  # Trigger alert if condition met for 10s 
+      labels:
+        severity: critical
+        team: homelab
+      annotations:
+        summary: "Instance {{ $labels.instance }} : High Disk Space Usage Instance"
+        description: "Instance {{ $labels.instance }} of job {{ $labels.job }} : Disk space usage on root filesystem is above 15%"
+        message: "Instance {{ $labels.instance }} is seeting high disk usage, currently used disk space: {{.Value}}%"
