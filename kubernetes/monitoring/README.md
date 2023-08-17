@@ -1,6 +1,3 @@
-
-
-
 ## [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack)
 
 Installs the kube-prometheus stack, a collection of Kubernetes manifests, Grafana dashboards, and Prometheus rules combined with documentation and scripts to provide easy to operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator.
@@ -32,23 +29,24 @@ kubectl apply -f ingress.yaml
 
 The ingress resource would control the traffic routing as shown below.
 
-
 ```mermaid
 graph LR;
   client([client])-. Ingress-managed <br> load balancer .->ingress[Ingress, 192.168.11.245];
   ingress-->|/monitoring/prometheus/graph|service1[Service: prometheus-kube-prometheus-prometheus:9090];
   ingress-->|/monitoring/grafana/login|service2[Service: prometheus-grafana:80];
   ingress-->|/monitoring/alertmanager|service3[Service: prometheus-kube-prometheus-alertmanager:9093];
+  ingress-->|/monitoring/api/|service4[Service: api-service:3000];
   subgraph cluster, namespace:monitoring
   ingress;
   service1
   service2
   service3
+  service4
   end
   classDef plain fill:#ddd,stroke:#fff,stroke-width:4px,color:#000;
   classDef k8s fill:#326ce5,stroke:#fff,stroke-width:4px,color:#fff;
   classDef cluster fill:#fff,stroke:#bbb,stroke-width:2px,color:#326ce5;
-  class ingress,service1,service2,service3 k8s;
+  class ingress,service1,service2,service3,service4 k8s;
   class client plain;
   class cluster cluster;
 ```

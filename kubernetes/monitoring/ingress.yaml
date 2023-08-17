@@ -35,3 +35,12 @@ spec:
               number: 9093
         path: /monitoring/alertmanager(/|$)(.*)
         pathType: Prefix
+  - http:
+      paths:
+      - backend:
+          service:
+            name: api-service
+            port:
+              number: 3000
+        path: /monitoring/api(/|$)(.*)
+        pathType: Prefix

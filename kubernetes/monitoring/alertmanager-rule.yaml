@@ -1,0 +1,50 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: alert-config
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  route:
+    groupBy: ["alertname"]
+    groupWait: 30s
+    groupInterval: 30s
+    repeatInterval: 12h
+    receiver: "webhook"
+    routes:
+      - matchers:
+          - name: team
+            value: infra
+        receiver: "infra"
+        groupBy: ["severity"]
+  receivers:
+    - name: "webhook"
+      slackConfigs:
+        - channel: '#monitoring'
+          apiURL:
+            name: alertmanager-secrets
+            key: apiURL
+            optional: true
+
+    - name: "infra"
+      emailConfigs:
+        - to: <email address>@gmail.com
+          from: <email address>@gmail.com
+          smarthost: smtp.gmail.com:587
+          authUsername: <email address>@gmail.com
+          authIdentity: <email address>@gmail.com
+          authPassword: 
+            name: alertmanager-secrets
+            key: authPassword
+            optional: true
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: alertmanager-secrets
+  namespace: monitoring
+type: Opaque
+data:
+  authPassword: <secret>
+  apiURL: <secret>
