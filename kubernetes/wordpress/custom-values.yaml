@@ -1,0 +1,11 @@
+global:
+  storageClass: "nfs-client"
+service:
+  type: ClusterIP
+ingress:
+  enabled: true
+  pathType: Prefix
+  ingressClassName: "nginx"
+  path: /wordpress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
