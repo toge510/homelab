@@ -2,39 +2,23 @@
 
 Dashboard is a web-based Kubernetes user interface. 
 
-### Deploying the Dashboard
-
-Download the manifest file.
+### Deploying the Dashboard with Helm
 
 ```
-wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 ```
 
-Update Service as Load balancer type
+```
+helm install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard --version 6.0.8 -f custom-values.yaml 
+```
+
+Use `custom-values.yaml ` so that the EXTERNAL-IP (192.168.11.240) can be assigned to kubernetes-dashboard load balancer service by metalLB.
 
 ```
-kind: Service
-apiVersion: v1
-metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
+service:
+  type: LoadBalancer
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.11.240
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 443
-      targetPort: 8443
-  selector:
-    k8s-app: kubernetes-dashboard
-```
-
-Deploy the Dashboard
-
-```
-kubectl apply -f recommended.yaml
 ```
 
 Create a new user using the Service Account mechanism of Kubernetes, grant this user admin permissions and login to Dashboard using a bearer token tied to this user.
@@ -77,6 +61,7 @@ Access `192.168.11.240` and login with the above token.
 
 
 ### _References_
+* [kubernetes-dashboard](https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard/6.0.8)
 * [Creating sample user](https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md)
 * [Deploy and Access the Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
 * [Create additional API tokens](https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/#create-token)
