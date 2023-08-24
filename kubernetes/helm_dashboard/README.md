@@ -11,6 +11,8 @@ Helm Dashboard is an open-source project which offers a UI-driven way to view th
 helm install helm-dashboard komodorio/helm-dashboard --version 0.1.10 --create-namespace --namespace helm -f custom-values.yaml
 ```
 
+Goto `192.168.11.245/helm`
+
 ## _References_
 
 * [helm dashboard](https://github.com/komodorio/helm-charts/tree/master/charts/helm-dashboard)
