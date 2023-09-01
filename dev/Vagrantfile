@@ -1,0 +1,12 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"
+  config.vm.define "dev_ubuntu" do |dev_ubuntu|
+    dev_ubuntu.vm.hostname = "dev"
+    dev_ubuntu.vm.network "public_network", ip: "192.168.11.100", bridge: "enp2s0"
+    dev_ubuntu.vm.provider "virtualbox" do |vb|
+      vb.name = "dev_ubuntu"
+      vb.memory = "4096"
+      vb.cpus = "4"
+    end
+  end
+end

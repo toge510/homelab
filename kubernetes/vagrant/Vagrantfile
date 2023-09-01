@@ -17,5 +17,28 @@ Vagrant.configure("2") do |config|
       vb.memory = "4096"
       vb.cpus = "4"
     end
+    worker.vm.disk :disk, size: "10GB", name: "extra_storage"
+  end
+  config.vm.define "worker2" do |worker2|
+    worker2.vm.box = "ubuntu/focal64"
+    worker2.vm.hostname = "worker2"
+    worker2.vm.network "public_network", ip: "192.168.11.12", bridge: "enp2s0"
+    worker2.vm.provider "virtualbox" do |vb|
+      vb.name = "worker2"
+      vb.memory = "4096"
+      vb.cpus = "4"
+    end
+    worker2.vm.disk :disk, size: "10GB", name: "extra_storage"
+  end
+  config.vm.define "worker3" do |worker3|
+    worker3.vm.box = "ubuntu/focal64"
+    worker3.vm.hostname = "worker3"
+    worker3.vm.network "public_network", ip: "192.168.11.13", bridge: "enp2s0"
+    worker3.vm.provider "virtualbox" do |vb|
+      vb.name = "worker3"
+      vb.memory = "4096"
+      vb.cpus = "4"
+    end
+    worker3.vm.disk :disk, size: "10GB", name: "extra_storage"
   end
 end
