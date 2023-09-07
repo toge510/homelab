@@ -288,20 +288,9 @@ kubectl apply -f alertmanager-rule.yaml
 **Note: the syntax of the k8s resource: `kind: AlertmanagerConfig` is different from the one of Prometheus config file.**  
 Please refer [monitoring.coreos.com_alertmanagerconfigs.yaml](https://github.com/prometheus-operator/prometheus-operator/blob/main/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml) and [AlertmanagerConfig [monitoring.coreos.com/v1alpha1]](https://docs.openshift.com/container-platform/4.7/rest_api/monitoring_apis/alertmanagerconfig-monitoring-coreos-com-v1alpha1.html).
 
+<br>
 
 ## Architecture
-
-* Deployments:
-  * prometheus-grafana - This is the grafana instance that gets deployed with the helm chart.
-  * prometheus-kube-prometheus-operator - Responsible for deploying & managing the prometheus instance.
-  * prometheus-kube-state-metrics - Collects cluster level metrics (pods, deployments, etc).
-* Statefulsets:
-  * prometheus-prometheus-kube-prometheus-prometheus - This is the prometheus instance.
-  * alertmanager-prometheus-kube-prometheus-alertmanager - This is the alertmanager instance.* 
-* Daemonset:
-  * prometheus-prometheus-node-exporter - Collects host metrics and exposes that endpoint.
-
-https://www.scsk.jp/sp/sysdig/blog/prometheus/prometheuskubernetes-_prometheus_operator_3.html
 
 ## _References_
 
@@ -310,8 +299,3 @@ https://www.scsk.jp/sp/sysdig/blog/prometheus/prometheuskubernetes-_prometheus_o
 * [Ingress-nginx: REWRITE](https://github.com/kubernetes/ingress-nginx/blob/main/docs/examples/rewrite/README.md))
 * [Step-by-step guide to setting up Prometheus Alertmanager with Slack, PagerDuty, and Gmail](https://grafana.com/blog/2020/02/25/step-by-step-guide-to-setting-up-prometheus-alertmanager-with-slack-pagerduty-and-gmail/)
 * [[Kubernetes] Prometheus Operator を Helm でイントールする方法](https://fand.jp/technologies/how-to-install-prometheus-operator-with-helm/)
-
-
-- Additional Scrate ConfigsからKodeKloud
-- values.yamleで、scrape config, alerting configを設定してデプロイする。
-- Architectureの理解
