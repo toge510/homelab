@@ -1,0 +1,73 @@
+## Provide custom recording or alerting rules to be deployed into the cluster.
+##
+additionalPrometheusRulesMap:
+ rule-name:
+   groups:
+   - name: node-example
+     rules:
+     - record: node_filesystem_free_percent
+       expr: 100* node_filesystem_free_bytes / node_filesystem_size_bytes
+     - alert: up (test)
+       expr: up == 1
+       labels:
+         team: infra
+         severity: warning
+
+grafana:
+  grafana.ini:
+    server:
+      serve_from_sub_path: true
+      domain: homelab.net
+      root_url: "%(protocol)s://%(domain)s/grafana/"
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations: 
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - homelab.net
+    path: /grafana/
+
+  # https://github.com/grafana/helm-charts/blob/c47b39f3bb77d84a3ccc1144e74519b677808b6a/charts/grafana/values.yaml#L296-L323
+  persistence:
+    type: pvc
+    enabled: true
+    storageClassName: rook-ceph-block
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi
+    finalizers:
+    - kubernetes.io/pvc-protection
+
+prometheus:
+  prometheusSpec:
+    storageSpec: 
+      volumeClaimTemplate:
+        spec:
+          storageClassName: rook-ceph-block
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+              
+  additionalServiceMonitors: 
+  - name: api-service-monitor
+    selector:
+      matchLabels:
+        app: api
+    endpoints:
+    - port: web
+      interval: 30s
+      path: /swagger-stats/metrics
+      scheme: http
+
+alertmanager:
+  alertmanagerSpec:
+    storage: 
+      volumeClaimTemplate:
+        spec:
+          storageClassName: rook-ceph-block
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
