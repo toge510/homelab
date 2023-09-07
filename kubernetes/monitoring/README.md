@@ -299,3 +299,11 @@ Please refer [monitoring.coreos.com_alertmanagerconfigs.yaml](https://github.com
 * [Ingress-nginx: REWRITE](https://github.com/kubernetes/ingress-nginx/blob/main/docs/examples/rewrite/README.md))
 * [Step-by-step guide to setting up Prometheus Alertmanager with Slack, PagerDuty, and Gmail](https://grafana.com/blog/2020/02/25/step-by-step-guide-to-setting-up-prometheus-alertmanager-with-slack-pagerduty-and-gmail/)
 * [[Kubernetes] Prometheus Operator を Helm でイントールする方法](https://fand.jp/technologies/how-to-install-prometheus-operator-with-helm/)
+
+## Memo
+
+The following things are useful if you edit `custom-values.yaml`.
+
+* See the default values with `helm -n monitoring show values prometheus-community/kube-prometheus-stack`
+* See the templates files (ex. [kube-prometheus-stack/templates/prometheus
+/prometheus.yaml](https://github.com/prometheus-community/helm-charts/blob/3352ef86286a7e8f07266ff3da1a575aa7368c8f/charts/kube-prometheus-stack/templates/prometheus/prometheus.yaml#L320))
