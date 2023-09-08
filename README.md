@@ -4,91 +4,117 @@ Homelab is a laboratory at home where you can self-host, experiment with new tec
 
 ## Quick Links
 
+* [Wiki](#wiki)
 * [Contents of the Repository](#contents-of-the-repository)
+* [Network Diagram](#network-diagram)
 * [Hardware](#hardware)
+* [User interface](#user-interface)
+* [Tech stack](#tech-stack)
 
-https://github.com/lisenet/kubernetes-homelab
+## Wiki
+
+* [WIki: Home](https://github.com/toge510/homelab/wiki)
 
 ## Contents of the Repository
 
-* autossh:
-* dev:  
-  Ubuntu environment for development, experiment.
-* kubernetes - 
-* monitoring - 
-* nfs - 
+* autossh - set-up ssh reverse tunnel with autossh
+* dev - development environment
+* kubernetes - kubernetes cluster
+* monitoring - minitoring stacks with Docker
+* nfs - NFS server
 
-https://github.com/lisenet/kubernetes-homelab#content-of-the-repository
+## Network Diagram
 
-## Network Diagram and Config
-
-MiniPC has the hostname: `homelab`. VMs by Virtualbox are created on the homelab.
+MiniPC has the hostname: `homelab` (ip address: `192.168.11.2`). VMs by Virtualbox are created on the homelab. Homelab network LAN is `192.168.11.0/24`
 
 <div align="center">
-<img src="./homelab_network.png" width=460>
+<img src="./images/homelab_network.png" width=640>
 </div>
-
-https://github.com/lisenet/kubernetes-homelab#homelab-network-diagram
 
 ## Hardware
 
-<table>
-    <tr>
-        <th>Router</th>
-        <th>MiniPC</th>
-        <th>Raspi </th>
-    </tr>
-    <tr>
-        <td><img src="./homelab.jpg" width=400 height=120></td>
-        <td><img src="./homelab.jpg" width=400 height=120></td>
-        <td><img src="./homelab.jpg" width=400 height=120></td>
-    </tr>
-</table>
+### Router: BUFFALO WXR-1900DHP2
 
-* Machine
-* Spec
+### MiniPC: Minisforum NAB6
+
+<div align="center">
+<img src="./images/homelab.jpg"  width=640>
+</div>
+
+* Processor: Intel® Core™ i7-12650H Processor, 10 Cores/16 Threads
+* Memory: DDR4 Dual channel 32GB
+* Storage: M.2 2280 PCIe4.0 SSD ×1 1TB
 
 ## User interface
 
-Deployed Applicationが一目でわかるようなApplicationを使用する予定
+Kubeapps is an Application Dashboard for Kubernetes.  
 
-* https://github.com/davidsbond/homelab
-* https://github.com/toboshii/hajimari
+<div align="center">
+<img src="./images/kubeapps.jpg">
+</div>
 
 ## Tech stack
 
+<div align="center">
 <table>
     <tr>
-        <th>Logo</th>
         <th>Name</th>
         <th>Description</th>
     </tr>
     <tr>
-        <td><img width="32" src="https://www.logo.wine/a/logo/Kubernetes/Kubernetes-Logo.wine.svg"></td>
-        <td><a href="https://kubernetes.io/">Kubernetes</a></td>
-        <td>system for automation and management of containerized applications.</td>
+        <td><a href="https://ceph.io/">Ceph</a></td>
+        <td>Distributed storage system designed to provide excellent performance, reliability, and scalability</td>
     </tr>
     <tr>
-        <td><img width="32" src="https://helm.sh/img/helm.svg"></td>
+        <td><a href="https://www.docker.com/">Docker</a></td>
+        <td>Containerization platform</td>
+    </tr>
+    <tr>
+        <td><a href="https://grafana.com/">Grafana</a></td>
+        <td>Open-source platform for monitoring and observability</td>
+    </tr>
+    <tr>
         <td><a href="https://helm.sh/">Helm</a></td>
-        <td>package manager for Kubernetes</td>
+        <td>Package manager for Kubernetes applications</td>
+    </tr>
+    <tr>
+        <td><a href="https://helm.sh/">Helm Dashboard</a></td>
+        <td>Web-based user interface for Helm, the Kubernetes package manager</td>
+    </tr>
+    <tr>
+        <td><a href="https://metallb.universe.tf/">MetalLB</a></td>
+        <td>Load balancer for bare metal Kubernetes clusters</td>
+    </tr>
+    <tr>
+        <td><a href="https://prometheus.io/">Prometheus</a></td>
+        <td>Open-source monitoring and alerting toolkit</td>
+    </tr>
+    <tr>
+        <td><a href="https://rook.io/">Rook Ceph</a></td>
+        <td>Open-source cloud-native storage orchestrator for Ceph storage in Kubernetes</td>
+    </tr>
+    <tr>
+        <td><a href="https://www.vagrantup.com/">Vagrant</a></td>
+        <td>Open-source tool for building and managing virtualized development environments</td>
+    </tr>
+    <tr>
+        <td><a href="https://kubeapps.com/">Kubeapps</a></td>
+        <td>Web-based Kubernetes application dashboard and marketplace</td>
+    </tr>
+    <tr>
+        <td><a href="https://kubernetes.io/">Kubernetes</a></td>
+        <td>Open-source container orchestration platform for automating the deployment, scaling, and management of containerized applications</td>
+    </tr>
+    <tr>
+        <td><a href="https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/">Ingress Nginx</a></td>
+        <td>Kubernetes Ingress controller using Nginx</td>
     </tr>
 </table>
+</div>
 
-* https://github.com/khuedoan/homelab#tech-stack
-
--------
--------
-* https://github.com/khuedoan/homelab#tech-stack
-* https://github.com/toboshii/hajimari
-* https://github.com/lisenet/kubernetes-homelab#content-of-the-repository
-* https://pkg.go.dev/github.com/davidsbond/homelab#section-readme
-* https://github.com/awesome-selfhosted/awesome-selfhosted/blob/master/README.md?plain=1
-
+<br>
 
 <div align="center">
-
-<br></br>
 
 **[`^        back to top        ^`](#my-homelab)**
 
