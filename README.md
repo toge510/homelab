@@ -20,7 +20,6 @@ Homelab is a laboratory at home where you can self-host, experiment with new tec
 * autossh - set-up ssh reverse tunnel with autossh
 * dev - development environment
 * kubernetes - kubernetes cluster
-* monitoring - minitoring stacks with Docker
 * nfs - NFS server
 
 ## Network Diagram
