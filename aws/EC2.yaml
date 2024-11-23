@@ -1,0 +1,56 @@
+Resources:
+  SGEC2Instance:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: SG for EC2 Instance
+      VpcId: !ImportValue MyVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name 
+          Value: SG-EC2
+
+  MyKeyPair:
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyName: MyKeyPair
+
+  # MyEC2:
+  #   Type: AWS::EC2::Instance
+  #   Properties:
+  #     ImageId: ami-0bf4c288973b2f12b
+  #     InstanceType: t2.micro
+  #     KeyName: !Ref MyKeyPair
+  #     VpcId: !ImportValue MyVPC
+  #     NetworkInterfaces:
+  #       - AssociatePublicIpAddress: true
+  #         SubnetId: !ImportValue PublicSubnet01
+  #         DeviceIndex: 0
+  #         GroupSet:
+  #           - !Ref SGEC2Instance
+  #     Tags:
+  #       - Key: Name
+  #         Value: MyEC2
+
+  # MyEC22:
+  #   Type: AWS::EC2::Instance
+  #   Properties:
+  #     ImageId: ami-0bf4c288973b2f12b
+  #     InstanceType: t2.micro
+  #     KeyName: !Ref MyKeyPair
+  #     VpcId: !ImportValue MyVPC
+  #     NetworkInterfaces:
+  #       - SubnetId: !ImportValue PrivateSubnet01
+  #         DeviceIndex: 0
+  #         GroupSet:
+  #           - !Ref SGEC2Instance
+  #     Tags:
+  #       - Key: Name
+  #         Value: MyEC22
