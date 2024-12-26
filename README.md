@@ -18,6 +18,7 @@ Homelab is a laboratory at home where you can self-host, experiment with new tec
 ## Contents of the Repository
 
 * autossh - set-up ssh reverse tunnel with autossh
+* aws - aws environment cloudformation stacks
 * dev - development environment
 * kubernetes - kubernetes cluster
 * nfs - NFS server
@@ -32,13 +33,13 @@ MiniPC has the hostname: `homelab` (ip address: `192.168.11.2`). VMs by Virtualb
 
 ## Hardware
 
-### Router: BUFFALO WXR-1900DHP2
+<div align="center">
+<img src="./images/hardware.jpg"  width=640>
+</div>
+
+### Router: UniFi Dream Router
 
 ### MiniPC: Minisforum NAB6
-
-<div align="center">
-<img src="./images/homelab.jpg"  width=640>
-</div>
 
 * Processor: Intel® Core™ i7-12650H Processor, 10 Cores/16 Threads
 * Memory: DDR4 Dual channel 32GB
