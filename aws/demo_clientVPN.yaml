@@ -1,0 +1,117 @@
+Resources:
+  # VPC 
+  DemoVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 192.168.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: Demo-VPC
+
+  # Subnet
+  DemoAppSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref DemoVPC
+      CidrBlock: 192.168.0.0/24
+      AvailabilityZone: ap-northeast-1a
+      Tags:
+        - Key: Name
+          Value: Demo-App-SubnetA
+
+  DemoClientVPNSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref DemoVPC
+      CidrBlock: 192.168.100.0/24
+      AvailabilityZone: ap-northeast-1a
+      Tags:
+        - Key: Name
+          Value: Demo-ClientVPN-SubnetA
+  
+  # Route Table
+  DemoAppRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref DemoVPC
+      Tags:
+        - Key: Name
+          Value: Demo-App-RouteTable
+
+  DemoClientVPNRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref DemoVPC
+      Tags:
+        - Key: Name
+          Value: Demo-ClientVPN-RouteTable
+
+  # Route Table Association
+  DemoAppRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref DemoAppRouteTable
+      SubnetId: !Ref DemoAppSubnetA
+
+  DemoClientVPNRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref DemoClientVPNRouteTable
+      SubnetId: !Ref DemoClientVPNSubnetA
+
+  # Security Group
+  DemoAppSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref DemoVPC
+      GroupDescription: Demo App Security Group
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          SourceSecurityGroupId: !Ref DemoClientVPNSecurityGroup
+
+  DemoClientVPNSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      VpcId: !Ref DemoVPC
+      GroupDescription: Demo Client VPN Security Group
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          IpProtocol: -1
+
+  # Client VPN Endpoint
+  DemoClientVPNEndpoint:
+    Type: AWS::EC2::ClientVpnEndpoint
+    Properties:
+      AuthenticationOptions:
+      - Type: certificate-authentication
+        MutualAuthentication:
+         ClientRootCertificateChainArn: arn:aws:acm:ap-northeast-1:624838222411:certificate/05bc5071-ea3f-4fce-b0d3-e07c0bad8943
+      ClientCidrBlock: 10.100.0.0/16
+      ConnectionLogOptions:
+        Enabled: false
+      SecurityGroupIds: 
+        - !Ref DemoClientVPNSecurityGroup
+      ServerCertificateArn: arn:aws:acm:ap-northeast-1:624838222411:certificate/74aa396f-c2ec-485c-8bb9-0599d08a16e9
+      VpcId: !Ref DemoVPC
+      TagSpecifications:
+        - ResourceType: client-vpn-endpoint
+          Tags:
+            - Key: Name
+              Value: Demo-ClientVPN-Endpoint
+
+  # Network Association
+  DemoClientVpnTargetNetworkAssociation:
+    Type: AWS::EC2::ClientVpnTargetNetworkAssociation
+    Properties:
+      ClientVpnEndpointId: !Ref DemoClientVPNEndpoint
+      SubnetId: !Ref DemoClientVPNSubnetA
+
+  # Authorization Rule
+  DemoClientVPNAuthorizationRule:
+    Type: AWS::EC2::ClientVpnAuthorizationRule
+    Properties:
+      ClientVpnEndpointId: !Ref DemoClientVPNEndpoint
+      TargetNetworkCidr: !GetAtt DemoVPC.CidrBlock
+      AuthorizeAllGroups: true
