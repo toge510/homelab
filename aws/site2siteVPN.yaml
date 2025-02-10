@@ -1,0 +1,132 @@
+Resources:
+  # Customer Gateway
+  HomeCustomerGateway:
+    Type: AWS::EC2::CustomerGateway
+    Properties:
+      BgpAsn: 65000
+      IpAddress: 220.144.139.181
+      Type: ipsec.1
+      Tags:
+        - Key: Name
+          Value: Home-Customer-Gateway
+
+  # Virtual Private Gateway
+  MyVirtualPrivateGateway:
+    Type: AWS::EC2::VPNGateway
+    Properties:
+      Type: ipsec.1
+      Tags:
+        - Key: Name
+          Value: My-Virtual-Private-Gateway
+
+  # VPN Connection
+  MyVPNConnection:
+    Type: AWS::EC2::VPNConnection
+    Properties:
+      CustomerGatewayId: !Ref HomeCustomerGateway
+      VpnGatewayId: !Ref MyVirtualPrivateGateway
+      Type: ipsec.1
+      StaticRoutesOnly: true
+      LocalIpv4NetworkCidr: 192.168.1.0/24
+      VpnTunnelOptionsSpecifications:
+        - PreSharedKey: Qc9GZnO3RsimABGoz1G004JZXsTHZKrC
+          Phase1EncryptionAlgorithms:
+            - Value: AES256
+          Phase2EncryptionAlgorithms:
+            - Value: AES256
+          Phase1IntegrityAlgorithms:
+            - Value: SHA2-256
+            - Value: SHA2-384
+            - Value: SHA2-512
+          Phase2IntegrityAlgorithms:
+            - Value: SHA2-256
+            - Value: SHA2-384
+            - Value: SHA2-512
+          Phase1DHGroupNumbers:
+            - Value: 14
+            - Value: 15
+            - Value: 16
+            - Value: 17
+            - Value: 18
+            - Value: 19
+            - Value: 20
+            - Value: 21
+            - Value: 22
+            - Value: 23
+            - Value: 24
+          Phase2DHGroupNumbers:
+            - Value: 14
+            - Value: 15
+            - Value: 16
+            - Value: 17
+            - Value: 18
+            - Value: 19
+            - Value: 20
+            - Value: 21
+            - Value: 22
+            - Value: 23
+            - Value: 24
+          IKEVersions:
+            - Value: ikev2
+        - PreSharedKey: Qc9GZnO3RsimABGoz1G004JZXsTHZKrC
+          Phase1EncryptionAlgorithms:
+            - Value: AES256
+          Phase2EncryptionAlgorithms:
+            - Value: AES256
+          Phase1IntegrityAlgorithms:
+            - Value: SHA2-256
+            - Value: SHA2-384
+            - Value: SHA2-512
+          Phase2IntegrityAlgorithms:
+            - Value: SHA2-256
+            - Value: SHA2-384
+            - Value: SHA2-512
+          Phase1DHGroupNumbers:
+            - Value: 14
+            - Value: 15
+            - Value: 16
+            - Value: 17
+            - Value: 18
+            - Value: 19
+            - Value: 20
+            - Value: 21
+            - Value: 22
+            - Value: 23
+            - Value: 24
+          Phase2DHGroupNumbers:
+            - Value: 14
+            - Value: 15
+            - Value: 16
+            - Value: 17
+            - Value: 18
+            - Value: 19
+            - Value: 20
+            - Value: 21
+            - Value: 22
+            - Value: 23
+            - Value: 24
+          IKEVersions:
+            - Value: ikev2
+      Tags:
+        - Key: Name
+          Value: My-VPN-Connection
+
+  # VPC Gateway Attachment
+  MyVPCGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !ImportValue MyVPC
+      VpnGatewayId: !Ref MyVirtualPrivateGateway
+
+  # VPN Connection Route
+  MyVPNRoute:
+    Type: AWS::EC2::VPNConnectionRoute
+    Properties:
+      DestinationCidrBlock: 192.168.1.0/24
+      VpnConnectionId: !Ref MyVPNConnection
+
+Outputs:
+  MyVPNConnect:
+    Value: MyVirtualPrivateGateway
+    Export:
+      Name: My-Virtual-Private-Gateway
