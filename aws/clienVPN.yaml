@@ -1,0 +1,38 @@
+Resources:
+  # VPC 
+  ClienVPNVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.100.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: Clien-VPN-VPC
+
+  # # Subnet
+  # ClienVPNPrivateSubnet:
+  #   Type: AWS::EC2::Subnet
+  #   Properties:
+  #     VpcId: !Ref ClienVPNVPC
+  #     CidrBlock: 10.100.0.0/24
+  #     AvailabilityZone: ap-northeast-1a
+  #     Tags:
+  #       - Key: Name
+  #         Value: Clien-VPN-Private-Subnet
+
+  # # RouteTable
+  # ClienVPNRouteTable:
+  #   Type: AWS::EC2::RouteTable
+  #   Properties:
+  #     VpcId: !Ref ClienVPNVPC
+  #     Tags:
+  #       - Key: Name
+  #         Value: Clien-VPN-Route-Table
+
+  # # Route
+  # ClienVPNRoute:
+  #   Type: AWS::EC2::Route
+  #   Properties:
+  #     RouteTableId: !Ref ClienVPNRouteTable
+  #     DestinationCidrBlock: 0.0.0.0/0

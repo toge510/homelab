@@ -31,19 +31,19 @@ Resources:
         - Key: Name
           Value: PrivateSubnet01
 
-  # InternetGateway
-  MyIGW:
-    Type: AWS::EC2::InternetGateway
-    Properties:
-      Tags:
-        - Key: Name
-          Value: MyIGW
+  # # InternetGateway
+  # MyIGW:
+  #   Type: AWS::EC2::InternetGateway
+  #   Properties:
+  #     Tags:
+  #       - Key: Name
+  #         Value: MyIGW
 
-  AttachGateway:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      VpcId: !Ref MyVPC
-      InternetGatewayId: !Ref MyIGW
+  # AttachGateway:
+  #   Type: AWS::EC2::VPCGatewayAttachment
+  #   Properties:
+  #     VpcId: !Ref MyVPC
+  #     InternetGatewayId: !Ref MyIGW
 
   # Route Table
   RoutePublicSubnet:
@@ -54,13 +54,28 @@ Resources:
         - Key: Name
           Value: RoutePublicSubnet
 
-  # Route
-  RoutePublic: 
+  RoutePrivateSubnet:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MyVPC
+      Tags:
+        - Key: Name
+          Value: RoutePrivateSubnet
+
+  # # Route
+  # RoutePublic: 
+  #   Type: AWS::EC2::Route
+  #   Properties:
+  #     RouteTableId: !Ref RoutePublicSubnet
+  #     DestinationCidrBlock: 0.0.0.0/0
+  #     GatewayId: !Ref MyIGW
+
+  RoutePrivate: 
     Type: AWS::EC2::Route
     Properties:
-      RouteTableId: !Ref RoutePublicSubnet
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref MyIGW
+      RouteTableId: !Ref RoutePrivateSubnet
+      DestinationCidrBlock: 192.168.1.0/24
+      GatewayId: vgw-008778b66f8f0cd8b
 
   # Route Table Association
   RouteTableAssocPublic01:
@@ -68,6 +83,12 @@ Resources:
     Properties:
       SubnetId: !Ref PublicSubnet01
       RouteTableId: !Ref RoutePublicSubnet
+
+  RouteTableAssocPrivate01:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet01
+      RouteTableId: !Ref RoutePrivateSubnet
 
 Outputs:
   MyVPC:
