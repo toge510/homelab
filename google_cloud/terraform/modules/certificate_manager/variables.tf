@@ -17,3 +17,18 @@ variable "project" {
   description = "The name of the project where the resources will be created"
   type        = string
 }
+
+variable "certificate_map" {
+  description = "certificate_map"
+  type        = string
+}
+
+variable "use_google_cloud_dns" {
+  description = "Use google cloud for DNS authorization"
+  type        = bool
+}
+
+variable "dns_authorization" {
+  description = "DNS authorization for AWS"
+  type        = string
+}
