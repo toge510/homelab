@@ -1,0 +1,126 @@
+Resources:
+# ------------------------------------------------------------#
+# IAM
+# ------------------------------------------------------------# 
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      RoleName: ecs-test-tast-execution-role
+
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      RoleName: ecs-test-tast-role
+
+  TaskRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: ecs-test-task-role-policy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: 
+              - "ssmmessages:CreateControlChannel"
+              - "ssmmessages:CreateDataChannel"
+              - "ssmmessages:OpenControlChannel"
+              - "ssmmessages:OpenDataChannel"
+            Resource: '*'
+      Roles:
+        - !Ref TaskRole
+
+# ------------------------------------------------------------#
+# ECS
+# ------------------------------------------------------------#  
+  # # ECR Repository
+  # MyECRRepository:
+  #   Type: AWS::ECR::Repository
+  #   Properties:
+  #     RepositoryName: my-ecs-nginx
+  #     Tags:
+  #       - Key: Name
+  #         Value: MyECRRepository
+  # # ECS Cluster
+  # MyECSCluster:
+  #   Type: AWS::ECS::Cluster
+  #   Properties:
+  #     ClusterName: MyECSCluster
+  #     Tags:
+  #       - Key: Name
+  #         Value: MyECSCluster
+
+#   # ECS Task Definition
+#   MyECSTaskDefinition:
+#     Type: AWS::ECS::TaskDefinition
+#     Properties:
+#       Family: MyECSTaskDefinition
+#       NetworkMode: awsvpc
+#       RequiresCompatibilities:
+#         - FARGATE
+#       TaskRoleArn: !Ref TaskRole
+#       ExecutionRoleArn: !Ref TaskExecutionRole
+#       Cpu: 256
+#       Memory: 512
+#       ContainerDefinitions:
+#         - Name: MyContainer
+#           Image: 624838222411.dkr.ecr.ap-northeast-1.amazonaws.com/my-ecs-nginx:latest
+#           Essential: true
+#           PortMappings:
+#             - ContainerPort: 80
+#               HostPort: 80
+#           MountPoints:
+#             - ReadOnly: false
+#               SourceVolume: efs_test
+#               ContainerPath: /mnt/efs
+#       Volumes:
+#         - EFSVolumeConfiguration:
+#             FilesystemId: fs-060d62a6a4a5556d6
+#             RootDirectory: /
+#           Name: efs_test
+
+#   # ECS Service
+#   MyECSService:
+#     Type: AWS::ECS::Service
+#     Properties:
+#       Cluster: !Ref MyECSCluster
+#       TaskDefinition: !Ref MyECSTaskDefinition
+#       DesiredCount: 1
+#       LaunchType: FARGATE
+#       enableExecuteCommand: true
+#       NetworkConfiguration:
+#         AwsvpcConfiguration:
+#           Subnets:
+#             - !ImportValue PublicSubnet01
+#           SecurityGroups:
+#             - !Ref MyECSSecurityGroup
+#           AssignPublicIp: ENABLED
+
+#   # Security Group for ECS Service
+#   MyECSSecurityGroup:
+#     Type: AWS::EC2::SecurityGroup
+#     Properties:
+#       GroupDescription: Allow HTTP traffic to ECS service
+#       VpcId: !ImportValue MyVPC
+#       SecurityGroupIngress:
+#         - IpProtocol: -1
+#           CidrIp: 0.0.0.0/0

@@ -1,0 +1,27 @@
+# Resources:
+#   EFSMountTarget:
+#     UpdateReplacePolicy: Retain
+#     Type: AWS::EFS::MountTarget
+#     DeletionPolicy: Retain
+#     Properties:
+#       SecurityGroups:
+#         - sg-056d60b68834ee57f
+#       FileSystemId: !Ref EFSFileSystem
+#       IpAddress: 10.0.0.69
+#       SubnetId: subnet-0d5c1ebf1e3221a9d
+#   EFSFileSystem:
+#     UpdateReplacePolicy: Retain
+#     Type: AWS::EFS::FileSystem
+#     DeletionPolicy: Retain
+#     Properties:
+#       PerformanceMode: generalPurpose
+#       Encrypted: false
+#       FileSystemTags:
+#         - Value: efs-test
+#           Key: Name
+#       FileSystemProtection:
+#         ReplicationOverwriteProtection: ENABLED
+#       LifecyclePolicies: []
+#       ThroughputMode: elastic
+#       BackupPolicy:
+#         Status: DISABLED
